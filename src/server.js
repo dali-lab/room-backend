@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
-// import mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 // import routers from './routers';
 
@@ -31,22 +31,22 @@ app.get('/', (req, res) => {
   res.send('Welcome to Rüm');
 });
 
-// // DB Setup
-// const mongooseOptions = {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useCreateIndex: true,
-//   useFindAndModify: false,
-//   loggerLevel: 'error',
-// };
+// DB Setup
+const mongooseOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  loggerLevel: 'error',
+};
 
-// // Connect the database
-// mongoose.connect(process.env.MONGODB_URI, mongooseOptions).then(() => {
-//   mongoose.Promise = global.Promise; // configures mongoose to use ES6 Promises
-//   if (process.env.NODE_ENV !== 'test') console.info('Connected to Database');
-// }).catch((err) => {
-//   console.error('Not Connected to Database - ERROR! ', err);
-// });
+// Connect the database
+mongoose.connect(process.env.MONGODB_URI, mongooseOptions).then(() => {
+  mongoose.Promise = global.Promise; // configures mongoose to use ES6 Promises
+  console.info('Connected to Database');
+}).catch((err) => {
+  console.error('Not Connected to Database - ERROR! ', err);
+});
 
 // Custom 404 middleware
 app.use((req, res) => {
