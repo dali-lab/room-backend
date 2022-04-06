@@ -1,5 +1,5 @@
-import calendarEventRouter from './calendarEventRouter';
+import events from './calendarEventRouter';
 
-export {
-  calendarEventRouter
+export default {
+  events,
 };

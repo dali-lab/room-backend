@@ -1,3 +1,4 @@
-import * as calendarEventController from './calendarEventController';
+import calendarEventController from './calendarEventController';
 
-export { calendarEventController }
+// eslint-disable-next-line import/prefer-default-export
+export { calendarEventController };

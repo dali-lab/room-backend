@@ -1,16 +1,17 @@
 import { Router } from 'express';
+import { calendarEventController } from '../controllers';
 
 const router = Router();
 
 // get all calendar events and create new calendar event
-router.route('/').get().post();
+router.route('/')
+  .get(calendarEventController.readAll)
+  .post(calendarEventController.create);
 
 // fetch calendar event by id, update event by id, remove event by id
-router.route("/:id").get().put().delete();
-
-// events for a given user?? router.route('/user/:uid')
-
-// edit approvals on a post for a passed uid
-router.route('/approvals/:id').post();
+router.route('/:id')
+  .get(calendarEventController.read)
+  .put(calendarEventController.update)
+  .delete(calendarEventController.deleteEvent);
 
 export default router;
