@@ -5,6 +5,7 @@ import morgan from 'morgan';
 // import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 // import routers from './routers';
+import { calendarEventRouter } from "./routers";
 
 dotenv.config({ silent: true });
 
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 // Object.keys(routers).forEach((prefix) => {
 //   app.use(`/${prefix}`, routers[prefix]);
 // });
+app.use("/calendarEvents", calendarEventRouter)
 
 // default index route
 app.get('/', (req, res) => {
