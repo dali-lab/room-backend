@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-// import routers from './routers';
+import routers from './routers';
 
 dotenv.config({ silent: true });
 
