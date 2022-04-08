@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { request } from '../controllers/request';
+import { requestController } from '../controllers/requestController';
 
 const router = Router();
 
@@ -15,4 +15,4 @@ router.route('/:id')
   .put(request.update)
   .delete(request.deleteEvent);
 
-export default router;
+export default request;
