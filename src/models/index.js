@@ -1,4 +1,4 @@
 import CalendarEventModel from './calendarEventModel';
+import UserModel from './userModel';
 
-// eslint-disable-next-line import/prefer-default-export
-export { CalendarEventModel as CalendarEvent };
+export { UserModel as User, CalendarEventModel as CalendarEvent };
