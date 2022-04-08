@@ -24,13 +24,13 @@ const signup = async (req, res) => {
   if (!email || !validator.validate(email)) {
     return res.status(422).send('You must provide an email.');
   }
-  if (!password || !validator.validate(password)) {
+  if (!password) {
     return res.status(422).send('You must provide a password.');
   }
-  if (!firstName || !validator.validate(firstName)) {
+  if (!firstName) {
     return res.status(422).send('You must provide a first name.');
   }
-  if (!lastName || !validator.validate(lastName)) {
+  if (!lastName) {
     return res.status(422).send('You must provide a last name.');
   }
 

@@ -1,5 +1,4 @@
+import events from './calendarEventRouter';
 import users from './userRouter';
 
-export default {
-  users,
-};
+export default { events, users };
