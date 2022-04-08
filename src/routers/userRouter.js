@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { userController } from '../controllers'; // will be added later by Claire
+import { userController } from '../controllers';
 import { requireAuth, requireSignin } from '../authentication';
 
 const router = Router();
