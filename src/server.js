@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-// import routers from './routers';
+import routers from './routers';
 
 dotenv.config({ silent: true });
 
@@ -22,9 +22,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // declare routers - prefix api endpoints
-// Object.keys(routers).forEach((prefix) => {
-//   app.use(`/${prefix}`, routers[prefix]);
-// });
+Object.keys(routers).forEach((prefix) => {
+  app.use(`/${prefix}`, routers[prefix]);
+});
 
 // default index route
 app.get('/', (req, res) => {
