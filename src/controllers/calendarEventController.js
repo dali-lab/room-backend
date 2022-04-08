@@ -16,9 +16,9 @@ const read = async (req, res) => {
   console.log('read');
   try {
     const foundCalendarEvent = await CalendarEvent
-      .findById(req.params.id);
-    //   .populate('author')
-    //   .populate('approvals');
+      .findById(req.params.id)
+      .populate('author')
+      .populate('approvals');
     console.log(foundCalendarEvent);
     res.status(200).json(foundCalendarEvent);
   } catch (error) {
@@ -31,7 +31,10 @@ const read = async (req, res) => {
  */
 const update = async (req, res) => {
   try {
-    const updatedCalendarEvent = await CalendarEvent.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedCalendarEvent = await CalendarEvent
+      .findByIdAndUpdate(req.params.id, req.body, { new: true })
+      .populate('author')
+      .populate('approvals');
     res.status(200).json(updatedCalendarEvent);
   } catch (error) {
     res.status(500).json(error);
@@ -56,9 +59,9 @@ const deleteEvent = async (req, res) => {
 const readAll = async (req, res) => {
   try {
     const allEvents = await CalendarEvent
-      .find(req.query);
-    //   .populate('author')
-    //   .populate('approvals');
+      .find(req.query)
+      .populate('author')
+      .populate('approvals');
     res.status(200).json(allEvents);
   } catch (error) {
     res.status(500).json(error);
