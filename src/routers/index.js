@@ -1,6 +1,5 @@
-/* eslint-disable import/prefer-default-export */
-import router from './requestRouter';
+import requests from './requestRouter';
 
-export {
-  router,
+export default {
+  requests,
 };

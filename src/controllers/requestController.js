@@ -12,11 +12,12 @@ const create = async (req, res) => {
 // read request with particular idea
 const read = async (req, res) => {
   console.log('read');
+  console.log(req.params.id);
   try {
     const foundRequest = await Request
       .findById(req.params.id);
-      //   .populate('author')
-      //   .populate('approvals');
+    //   .populate('author')
+    //   .populate('approvals');
     console.log(foundRequest);
     res.status(200).json(foundRequest);
   } catch (error) {
@@ -43,16 +44,16 @@ const deleteRequest = async (req, res) => {
 };
 
 // get all requests
-export const getAllRequests = async () => {
+const readAll = async (req, res) => {
   try {
-    const request = await Request.find();
-    if (request) return request;
-    const error = new Error('Not found');
-    error.code = 500;
-    throw error;
+    const allRequests = await Request
+      .find(req.query);
+    console.log(allRequests);
+    //  .populate('author');
+    // .populate('recipients');
+    res.status(200).json(allRequests);
   } catch (error) {
-    console.log(error);
-    throw error;
+    res.status(500).json(error);
   }
 };
 
@@ -61,7 +62,7 @@ const requestController = {
   read,
   update,
   deleteRequest,
-  getAllRequests,
+  readAll,
 
 };
 
