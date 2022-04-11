@@ -1,18 +1,23 @@
 import { Router } from 'express';
 import requestController from '../controllers/requestController';
+import { requireAuth } from '../authentication';
 
 const router = Router();
 
 // get all requests and create a new request
 router.route('/')
-  .get(requestController.readAll)
-  .post(requestController.create);
-// not entirely sure how to fetch such that only shows requests which are relevant?
+  .get(requireAuth, requestController.readAll)
+  .post(requireAuth, requestController.create);
 
-// fetch request by id, update request by id, remove request by id
+// fetch request by id, user id serves as filler for path differentiation
+router.route('/:userId/:id')
+  .get(requireAuth, requestController.read);
+
+// fetch requests for specific user if fed user id
+// if fed request id, delete and update
 router.route('/:id')
-  .get(requestController.read)
-  .put(requestController.update)
-  .delete(requestController.deleteRequest);
+  .get(requireAuth, requestController.getForUser)
+  .put(requireAuth, requestController.update)
+  .delete(requireAuth, requestController.deleteRequest);
 
 export default router;
