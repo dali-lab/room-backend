@@ -1,21 +1,21 @@
 import { Router } from 'express';
 import { userController } from '../controllers';
-import { requireAuth, requireSignin } from '../authentication';
+// import { requireAuth, requireSignin } from '../authentication';
 
 const router = Router();
 
 router.route('/')
-  .get(requireAuth, userController.readAll);
+  .get(userController.readAll);
 
 router.route('/signin')
-  .post(requireSignin, userController.signin);
+  .post(userController.signin);
 
 router.route('/signup')
   .post(userController.signup);
 
 router.route('/:id')
-  .get(requireAuth, userController.read)
-  .put(requireAuth, userController.update)
-  .delete(requireAuth, userController.remove);
+  .get(userController.read)
+  .put(userController.update)
+  .delete(userController.remove);
 
 export default router;
