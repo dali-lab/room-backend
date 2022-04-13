@@ -59,7 +59,6 @@ const deleteEvent = async (req, res) => {
 const readAll = async (req, res) => {
   try {
     const allEvents = await CalendarEvent
-      // .find(req.query)
       .find({ author: { $in: req.query.userIds } })
       .populate('author')
       .populate('approvals');
