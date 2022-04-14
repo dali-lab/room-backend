@@ -59,7 +59,7 @@ const signup = async (req, res) => {
 const signin = async (req, res) => {
   try {
     const foundUser = await User
-      .find({ email: req.body.email })
+      .findOne({ email: req.body.email })
       .populate('roommates');
     res.status(200).send({ token: tokenForUser(foundUser), user: foundUser });
   } catch (error) {
