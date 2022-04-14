@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import { userController } from '../controllers';
-// import { requireAuth, requireSignin } from '../authentication';
+import { requireAuth, requireSignin } from '../authentication';
 
 const router = Router();
 
 router.route('/')
-  .get(userController.readAll);
+  .get(requireAuth, userController.readAll);
 
 router.route('/signin')
-  .post(userController.signin);
+  .post(requireSignin, userController.signin);
 
 router.route('/signup')
   .post(userController.signup);
