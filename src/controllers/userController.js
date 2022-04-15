@@ -56,8 +56,15 @@ const signup = async (req, res) => {
 };
 
 /* signs user in */
-const signin = (req, res) => {
-  res.send({ token: tokenForUser(req.user), user: req.user });
+const signin = async (req, res) => {
+  try {
+    const foundUser = await User
+      .findOne({ email: req.body.email })
+      .populate('roommates');
+    res.status(200).send({ token: tokenForUser(foundUser), user: foundUser });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
 /* returns user document with passed id */
