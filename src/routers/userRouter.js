@@ -18,4 +18,9 @@ router.route('/:id')
   .put(requireAuth, userController.update)
   .delete(requireAuth, userController.remove);
 
+// router.route('room/:roomcode')
+//   .get(requireAuth, userController.read);
+router.route('/reset-password/:email')
+  .put(userController.resetPassword);
+
 export default router;

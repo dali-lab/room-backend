@@ -1,6 +1,7 @@
-// eslint-disable-next-line no-unused-vars
-import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+// import mongoose from 'mongoose';
 import jwt from 'jwt-simple';
+import sgMail from '@sendfrid/mail';
 import validator from 'email-validator';
 import { User } from '../models';
 
@@ -58,6 +59,8 @@ const signup = async (req, res) => {
 /* signs user in */
 const signin = async (req, res) => {
   try {
+    console.log('userController');
+
     const foundUser = await User
       .findOne({ email: req.body.email })
       .populate('roommates');
@@ -113,6 +116,52 @@ const readAll = async (req, res) => {
   }
 };
 
+/**
+ * @description updates user's password
+ * @param {String} username username to update
+ * @param {String} newPassword new password to set (in plain text)
+ * @returns {Promise<Object>} updated row
+ */
+export const changePassword = async (username, newPassword) => {
+  const saltedPassword = await bcrypt.hash(newPassword, 10);
+  return User.updateOne(username, { password: saltedPassword });
+};
+
+/**
+ * @description sends test email
+ * @param {String} email email to send message to
+ * @returns {Promise<Object>} response data
+ */
+export const sendTestEmail = async (email) => {
+  const msg = {
+    from: 'noreply.insectinvasionmodel@gmail.com',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    to: email,
+  };
+  return sgMail.send(msg);
+};
+
+/**
+ * @description resets user password to randomly generated password and sends to them via email
+ * @param {String} email email provided by user
+ * @returns {Promise<Object>} return value of email API
+ */
+export const resetPassword = async (req, res) => {
+  console.log('userController');
+  const user = (await User.findOne({ email: req.params.email }));
+  console.log(user);
+
+  // if (!user) {
+  //   // intentially providing no info here to avoid problem with a potentially malicious user
+  //   throw new CustomError();
+  // }
+  // const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
+  // await changePassword(user.username, newPassword);
+  // return sendPasswordResetEmail(user.email, user.first_name, newPassword);
+};
+
 const userController = {
   signup,
   signin,
@@ -120,6 +169,7 @@ const userController = {
   update,
   remove,
   readAll,
+  resetPassword,
 };
 
 export default userController;
