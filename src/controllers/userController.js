@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 // import mongoose from 'mongoose';
 import jwt from 'jwt-simple';
-import sgMail from '@sendfrid/mail';
+import sgMail from '@sendgrid/mail';
 import validator from 'email-validator';
 import { User } from '../models';
 
