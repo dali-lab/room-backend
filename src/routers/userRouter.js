@@ -13,6 +13,9 @@ router.route('/signin')
 router.route('/signup')
   .post(userController.signup);
 
+router.route('/reset-password')
+  .put(userController.resetPassword);
+
 router.route('/:id')
   .get(requireAuth, userController.read)
   .put(requireAuth, userController.update)
@@ -20,7 +23,5 @@ router.route('/:id')
 
 // router.route('room/:roomcode')
 //   .get(requireAuth, userController.read);
-router.route('/reset-password')
-  .put(userController.resetPassword);
 
 export default router;
