@@ -150,7 +150,8 @@ export const sendTestEmail = async (email) => {
  */
 export const resetPassword = async (req, res) => {
   console.log('userController');
-  const user = (await User.findOne({ email: req.body.email }));
+  const user = await User
+    .findOne({ email: req.body.email });
   console.log(user);
 
   // if (!user) {
