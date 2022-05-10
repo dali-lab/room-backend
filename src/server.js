@@ -56,6 +56,7 @@ app.use((req, res) => {
 
 sgMail.setApiKey(process.env.SG_API_KEY);
 console.log(process.env.SG_API_KEY);
+console.log(process.env.port);
 
 // START THE SERVER
 // =============================================================================
