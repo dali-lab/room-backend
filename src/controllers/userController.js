@@ -5,6 +5,10 @@ import sgMail from '@sendgrid/mail';
 import validator from 'email-validator';
 import { User } from '../models';
 
+const templates = {
+  resetPassword: 'd-e094e9943ae2450da985e35ebdafd6aa',
+};
+
 /* generates JWT authentication token for user based on uid passed in */
 const tokenForUser = (uid) => {
   const timestamp = new Date().getTime();
@@ -128,13 +132,13 @@ export const changePassword = async (id, newPassword) => {
   return User.findByIdAndUpdate(id, { password: saltedPassword }, { new: true });
 };
 
-export const sendTestEmail = async (email) => {
-  console.log('sending test email');
+export const sendPasswordResetEmail = (email, password) => {
   const msg = {
+    dynamic_template_data: {
+      password,
+    },
     from: 'room@dali.dartmouth.edu',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
+    templateId: templates.resetPassword,
     to: email,
   };
 
@@ -153,9 +157,9 @@ export const resetPassword = async (req, res) => {
     const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
 
     await changePassword(user.id, newPassword);
-    const hihi = await sendTestEmail(req.body.email);
+    const reset = await sendPasswordResetEmail(req.body.email, newPassword);
     console.log('changed password');
-    res.status(200).json(hihi);
+    res.status(200).json(reset);
   } catch (error) {
     res.status(500).json(error);
   }
