@@ -131,7 +131,7 @@ export const changePassword = async (id, newPassword) => {
 export const sendTestEmail = async (email) => {
   console.log('sending test email');
   const msg = {
-    from: 'noreply.insectinvasionmodel@gmail.com',
+    from: 'room@dali.dartmouth.edu',
     html: '<strong>and easy to do anywhere, even with Node.js</strong>',
     subject: 'Sending with SendGrid is Fun',
     text: 'and easy to do anywhere, even with Node.js',
