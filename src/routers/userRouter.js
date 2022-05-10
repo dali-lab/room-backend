@@ -20,7 +20,7 @@ router.route('/:id')
 
 // router.route('room/:roomcode')
 //   .get(requireAuth, userController.read);
-router.route('/reset-password/:email')
+router.route('/reset-password')
   .put(userController.resetPassword);
 
 export default router;
