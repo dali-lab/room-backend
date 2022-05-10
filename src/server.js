@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import sgMail from '@sendgrid/mail';
 import routers from './routers';
 
 dotenv.config({ silent: true });
@@ -52,6 +53,8 @@ mongoose.connect(process.env.MONGODB_URI, mongooseOptions).then(() => {
 app.use((req, res) => {
   res.status(404).json({ message: 'The route you\'ve requested doesn\'t exist' });
 });
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // START THE SERVER
 // =============================================================================

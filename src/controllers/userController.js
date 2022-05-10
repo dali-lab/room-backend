@@ -128,11 +128,6 @@ export const changePassword = async (id, newPassword) => {
   return User.findByIdAndUpdate(id, { password: saltedPassword }, { new: true });
 };
 
-/**
- * @description sends test email
- * @param {String} email email to send message to
- * @returns {Promise<Object>} response data
- */
 export const sendTestEmail = async (email) => {
   const msg = {
     from: 'noreply.insectinvasionmodel@gmail.com',
@@ -141,6 +136,7 @@ export const sendTestEmail = async (email) => {
     text: 'and easy to do anywhere, even with Node.js',
     to: email,
   };
+
   return sgMail.send(msg);
 };
 
@@ -156,8 +152,9 @@ export const resetPassword = async (req, res) => {
     const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
 
     await changePassword(user.id, newPassword);
+    const hihi = await sendTestEmail(req.body.email);
     console.log('changed password');
-    res.status(200).json(user);
+    res.status(200).json(hihi);
   } catch (error) {
     res.status(500).json(error);
   }
