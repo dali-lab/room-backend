@@ -54,7 +54,8 @@ app.use((req, res) => {
   res.status(404).json({ message: 'The route you\'ve requested doesn\'t exist' });
 });
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SG_API_KEY);
+console.log(process.env.SG_API_KEY);
 
 // START THE SERVER
 // =============================================================================
