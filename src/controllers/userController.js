@@ -122,9 +122,10 @@ const readAll = async (req, res) => {
  * @param {String} newPassword new password to set (in plain text)
  * @returns {Promise<Object>} updated row
  */
-export const changePassword = async (username, newPassword) => {
+export const changePassword = async (id, newPassword) => {
   const saltedPassword = await bcrypt.hash(newPassword, 10);
-  return User.updateOne(username, { password: saltedPassword });
+  console.log('going to update user');
+  return User.findByIdAndUpdate(id, { password: saltedPassword }, { new: true });
 };
 
 /**
@@ -149,17 +150,18 @@ export const sendTestEmail = async (email) => {
  * @returns {Promise<Object>} return value of email API
  */
 export const resetPassword = async (req, res) => {
-  console.log('userController');
-  const user = await User
-    .findOne({ email: req.body.email });
-  console.log(user);
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    console.log('found user', user);
+    const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
 
-  // if (!user) {
-  //   // intentially providing no info here to avoid problem with a potentially malicious user
-  //   throw new CustomError();
-  // }
-  // const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
-  // await changePassword(user.username, newPassword);
+    await changePassword(user.id, newPassword);
+    console.log('changed password');
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+
   // return sendPasswordResetEmail(user.email, user.first_name, newPassword);
 };
 
