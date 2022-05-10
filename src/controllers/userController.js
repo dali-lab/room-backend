@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 // import mongoose from 'mongoose';
 import jwt from 'jwt-simple';
-import sgMail from '@sendfrid/mail';
+import sgMail from '@sendgrid/mail';
 import validator from 'email-validator';
 import { User } from '../models';
 
@@ -150,7 +150,8 @@ export const sendTestEmail = async (email) => {
  */
 export const resetPassword = async (req, res) => {
   console.log('userController');
-  const user = (await User.findOne({ email: req.body.email }));
+  const user = await User
+    .findOne({ email: req.body.email });
   console.log(user);
 
   // if (!user) {
