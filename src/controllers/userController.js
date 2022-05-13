@@ -9,9 +9,6 @@ const templates = {
   resetPassword: 'd-f9b2d16fbf7b4be0bf63c1998a3c8f0e',
 };
 
-// I WANT TO SEND THE passwordResetUrl in the email message
-const passwordResetUrl = `http://${req.body.user}/reset-password/${user.tokenForUser}`;
-
 /* generates JWT authentication token for user based on uid passed in */
 const tokenForUser = (uid) => {
   const timestamp = new Date().getTime();
@@ -144,7 +141,7 @@ export const sendPasswordResetEmail = (email, password) => {
 
     dynamic_template_data: {
       password,
-      passwordResetUrl,
+      // passwordResetUrl,
     },
   };
 
@@ -158,6 +155,8 @@ export const sendPasswordResetEmail = (email, password) => {
  */
 export const resetPassword = async (req, res) => {
   try {
+    // I WANT TO SEND THE passwordResetUrl in the email message
+    // const passwordResetUrl = `http://${req.body.user.id}/reset-password/${user.tokenForUser}`;
     const user = await User.findOne({ email: req.body.email });
     console.log('found user', user);
     const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
