@@ -1,6 +1,7 @@
-// eslint-disable-next-line no-unused-vars
-import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+// import mongoose from 'mongoose';
 import jwt from 'jwt-simple';
+import sgMail from '@sendgrid/mail';
 import validator from 'email-validator';
 import { User } from '../models';
 
@@ -8,6 +9,17 @@ import { User } from '../models';
 const tokenForUser = (uid) => {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: uid, iat: timestamp }, process.env.AUTH_SECRET);
+};
+
+export const sendTestEmail = async (email) => {
+  const msg = {
+    from: 'room@dali.dartmouth.edu',
+    html: '<strong>Try to remmeber :)))))</strong>',
+    subject: 'Psych!!!',
+    text: 'try to remember :)))))',
+    to: email,
+  };
+  return sgMail.send(msg);
 };
 
 /* creates new user and saves their data to the database */
@@ -113,6 +125,37 @@ const readAll = async (req, res) => {
   }
 };
 
+/**
+ * @description updates user's password
+ * @param {String} username username to update
+ * @param {String} newPassword new password to set (in plain text)
+ * @returns {Promise<Object>} updated row
+ */
+export const changePassword = async (id, newPassword) => {
+  const saltedPassword = await bcrypt.hash(newPassword, 10);
+  return User.findByIdAndUpdate(id, { password: saltedPassword }, { new: true });
+};
+
+/**
+ * @description resets user password to randomly generated password and sends to them via email
+ * @param {String} email email provided by user
+ * @returns {Promise<Object>} return value of email API
+ */
+export const resetPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
+
+    await changePassword(user.id, newPassword);
+    const reset = await sendTestEmail(req.body.email);
+    res.status(200).json(reset);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+
+  // return sendPasswordResetEmail(user.email, user.first_name, newPassword);
+};
+
 const userController = {
   signup,
   signin,
@@ -120,6 +163,7 @@ const userController = {
   update,
   remove,
   readAll,
+  resetPassword,
 };
 
 export default userController;

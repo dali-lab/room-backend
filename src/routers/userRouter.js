@@ -13,9 +13,15 @@ router.route('/signin')
 router.route('/signup')
   .post(userController.signup);
 
+router.route('/reset-password')
+  .put(userController.resetPassword);
+
 router.route('/:id')
   .get(requireAuth, userController.read)
   .put(requireAuth, userController.update)
   .delete(requireAuth, userController.remove);
+
+// router.route('room/:roomcode')
+//   .get(requireAuth, userController.read);
 
 export default router;
