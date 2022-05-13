@@ -4,7 +4,7 @@ import jwt from 'jwt-simple';
 import sgMail from '@sendgrid/mail';
 import validator from 'email-validator';
 import { User } from '../models';
-
+//
 const templates = {
   resetPassword: 'd-f9b2d16fbf7b4be0bf63c1998a3c8f0e',
 };
