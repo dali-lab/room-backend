@@ -70,8 +70,6 @@ const signup = async (req, res) => {
 /* signs user in */
 const signin = async (req, res) => {
   try {
-    console.log('userController');
-
     const foundUser = await User
       .findOne({ email: req.body.email })
       .populate('roommates');
@@ -135,7 +133,6 @@ const readAll = async (req, res) => {
  */
 export const changePassword = async (id, newPassword) => {
   const saltedPassword = await bcrypt.hash(newPassword, 10);
-  console.log('going to update user');
   return User.findByIdAndUpdate(id, { password: saltedPassword }, { new: true });
 };
 
@@ -147,12 +144,10 @@ export const changePassword = async (id, newPassword) => {
 export const resetPassword = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    console.log('found user', user);
     const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
 
     await changePassword(user.id, newPassword);
     const reset = await sendTestEmail(req.body.email);
-    console.log('changed password');
     res.status(200).json(reset);
   } catch (error) {
     res.status(500).json(error);
