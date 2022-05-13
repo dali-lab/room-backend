@@ -16,6 +16,9 @@ router.route('/signup')
 router.route('/reset-password')
   .put(userController.resetPassword);
 
+router.route('/reset-password/:password')
+  .put(userController.resetPassword);
+
 router.route('/:id')
   .get(requireAuth, userController.read)
   .put(requireAuth, userController.update)
