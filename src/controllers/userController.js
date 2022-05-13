@@ -4,15 +4,22 @@ import jwt from 'jwt-simple';
 import sgMail from '@sendgrid/mail';
 import validator from 'email-validator';
 import { User } from '../models';
-//
-const templates = {
-  resetPassword: 'd-f9b2d16fbf7b4be0bf63c1998a3c8f0e',
-};
 
 /* generates JWT authentication token for user based on uid passed in */
 const tokenForUser = (uid) => {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: uid, iat: timestamp }, process.env.AUTH_SECRET);
+};
+
+export const sendTestEmail = async (email) => {
+  const msg = {
+    from: 'room@dali.dartmouth.edu',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    subject: 'Psych!!!',
+    text: 'try to remember :)))))',
+    to: email,
+  };
+  return sgMail.send(msg);
 };
 
 /* creates new user and saves their data to the database */
@@ -132,22 +139,6 @@ export const changePassword = async (id, newPassword) => {
   return User.findByIdAndUpdate(id, { password: saltedPassword }, { new: true });
 };
 
-export const sendPasswordResetEmail = (email, password) => {
-  const msg = {
-
-    from: 'room@dali.dartmouth.edu',
-    templateId: templates.resetPassword,
-    to: email,
-
-    dynamic_template_data: {
-      password,
-      // passwordResetUrl,
-    },
-  };
-
-  return sgMail.send(msg);
-};
-
 /**
  * @description resets user password to randomly generated password and sends to them via email
  * @param {String} email email provided by user
@@ -155,14 +146,12 @@ export const sendPasswordResetEmail = (email, password) => {
  */
 export const resetPassword = async (req, res) => {
   try {
-    // I WANT TO SEND THE passwordResetUrl in the email message
-    // const passwordResetUrl = `http://${req.body.user.id}/reset-password/${user.tokenForUser}`;
     const user = await User.findOne({ email: req.body.email });
     console.log('found user', user);
     const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
 
     await changePassword(user.id, newPassword);
-    const reset = await sendPasswordResetEmail(req.body.email, newPassword);
+    const reset = await sendTestEmail(req.body.email);
     console.log('changed password');
     res.status(200).json(reset);
   } catch (error) {
