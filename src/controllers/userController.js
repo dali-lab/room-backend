@@ -6,8 +6,11 @@ import validator from 'email-validator';
 import { User } from '../models';
 
 const templates = {
-  resetPassword: 'd-e094e9943ae2450da985e35ebdafd6aa',
+  resetPassword: 'd-f9b2d16fbf7b4be0bf63c1998a3c8f0e',
 };
+
+// I WANT TO SEND THE passwordResetUrl in the email message
+const passwordResetUrl = `http://${req.body.user}/reset-password/${user.tokenForUser}`;
 
 /* generates JWT authentication token for user based on uid passed in */
 const tokenForUser = (uid) => {
@@ -134,12 +137,15 @@ export const changePassword = async (id, newPassword) => {
 
 export const sendPasswordResetEmail = (email, password) => {
   const msg = {
-    dynamic_template_data: {
-      password,
-    },
+
     from: 'room@dali.dartmouth.edu',
     templateId: templates.resetPassword,
     to: email,
+
+    dynamic_template_data: {
+      password,
+      passwordResetUrl,
+    },
   };
 
   return sgMail.send(msg);
