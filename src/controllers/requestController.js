@@ -44,24 +44,11 @@ const deleteRequest = async (req, res) => {
   }
 };
 
-// get all requests
+// get requests
 const readAll = async (req, res) => {
   try {
-    const allRequests = await Request
-      .find(req.query)
-      .populate('author')
-      .populate('recipients');
-    res.status(200).json(allRequests);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-// get requests for specific users
-const getForUser = async (req, res) => {
-  try {
     const userRequests = await Request
-      .find({ recipients: { $all: [req.params.id] } })
+      .find({ $or: [{ author: req.query.userId }, { recipients: { $all: [req.query.userId] } }] })
       .populate('author')
       .populate('recipients');
     res.status(200).json(userRequests);
@@ -76,7 +63,7 @@ const requestController = {
   update,
   deleteRequest,
   readAll,
-  getForUser,
+  // getForUser,
 };
 
 export default requestController;
