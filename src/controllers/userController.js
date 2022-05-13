@@ -14,7 +14,7 @@ const tokenForUser = (uid) => {
 export const sendTestEmail = async (email) => {
   const msg = {
     from: 'room@dali.dartmouth.edu',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    html: '<strong>Try to remmeber :)))))</strong>',
     subject: 'Psych!!!',
     text: 'try to remember :)))))',
     to: email,
