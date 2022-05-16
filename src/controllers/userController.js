@@ -50,9 +50,13 @@ const signup = async (req, res) => {
   const emailisTaken = !!(await User.findOne({ email }));
   if (emailisTaken) { return res.status(422).send('An account with this email already exists.'); }
 
+  /* add all roommates with the roomCode */
+  const roommates = await User
+    .find({ roomCode })
+    .populate('roommates');
+
   /* make a new user from passed in data */
   /* added info from database here */
-
   try {
     const newUser = await User.create({
       email: email.toLowerCase(),
@@ -60,6 +64,10 @@ const signup = async (req, res) => {
       firstName,
       lastName,
       roomCode,
+      roommates,
+    });
+    roommates.forEach(async (roommate) => {
+      await User.findByIdAndUpdate(roommate.id, { roommates: [...roommate.roommates, newUser] });
     });
     return res.status(200).json({ newUser, token: tokenForUser(newUser._id) });
   } catch (error) {
