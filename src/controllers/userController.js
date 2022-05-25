@@ -11,6 +11,17 @@ const tokenForUser = (uid) => {
   return jwt.encode({ sub: uid, iat: timestamp }, process.env.AUTH_SECRET);
 };
 
+export const sendTestEmail = async (email) => {
+  const msg = {
+    from: 'room@dali.dartmouth.edu',
+    html: '<strong>Try to remmeber :)))))</strong>',
+    subject: 'Psych!!!',
+    text: 'try to remember :)))))',
+    to: email,
+  };
+  return sgMail.send(msg);
+};
+
 /* creates new user and saves their data to the database */
 const signup = async (req, res) => {
   const {
@@ -128,19 +139,6 @@ export const changePassword = async (id, newPassword) => {
   return User.findByIdAndUpdate(id, { password: saltedPassword }, { new: true });
 };
 
-export const sendTestEmail = async (email) => {
-  console.log('sending test email');
-  const msg = {
-    from: 'room@dali.dartmouth.edu',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    to: email,
-  };
-
-  return sgMail.send(msg);
-};
-
 /**
  * @description resets user password to randomly generated password and sends to them via email
  * @param {String} email email provided by user
@@ -153,9 +151,9 @@ export const resetPassword = async (req, res) => {
     const newPassword = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
 
     await changePassword(user.id, newPassword);
-    const hihi = await sendTestEmail(req.body.email);
+    const reset = await sendTestEmail(req.body.email);
     console.log('changed password');
-    res.status(200).json(hihi);
+    res.status(200).json(reset);
   } catch (error) {
     res.status(500).json(error);
   }
