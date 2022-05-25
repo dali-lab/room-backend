@@ -17,8 +17,8 @@ const read = async (req, res) => {
   try {
     const foundCalendarEvent = await CalendarEvent
       .findById(req.params.id)
-      .populate('author')
-      .populate('approvals');
+      .populate('approvals')
+      .populate('author');
     console.log(foundCalendarEvent);
     res.status(200).json(foundCalendarEvent);
   } catch (error) {
