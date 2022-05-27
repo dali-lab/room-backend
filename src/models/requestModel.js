@@ -8,6 +8,7 @@ const RequestSchema = new Schema({
   end: { type: Date, default: Date.prototype.getDate },
   upvotes: { type: Number, default: 0 },
   downvotes: { type: Number, default: 0 },
+  completed: { type: Boolean, default: false },
 }, {
   toObject: { virtuals: true },
   toJSON: { virtuals: true },
