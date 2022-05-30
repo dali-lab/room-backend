@@ -13,7 +13,6 @@ const create = async (req, res) => {
  * Finds calendarEvent object with passed id
  */
 const read = async (req, res) => {
-  console.log('readnwejner');
   try {
     const foundCalendarEvent = await CalendarEvent
       .findById(req.params.id)
