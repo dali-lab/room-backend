@@ -6,7 +6,7 @@ const CalendarEventSchema = new Schema({
   end: { type: Schema.Types.Date, default: Date.now() },
   author: { type: Schema.Types.ObjectId, ref: 'User' },
   allDay: { type: Schema.Types.Boolean, default: false },
-  approvals: [{ type: Schema.Types.Object, ref: 'User' }],
+  approvals: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 }, {
   toObject: { virtuals: true },
   toJSON: { virtuals: true },
